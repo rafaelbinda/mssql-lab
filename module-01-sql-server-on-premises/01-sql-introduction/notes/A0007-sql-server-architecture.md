@@ -1,4 +1,4 @@
-﻿# A0007 – Sql Server Architecture
+# A0007 – SQL Server Architecture
 
 > **Author:** Rafael Binda  
 > **Created:** 2026-02-18  
@@ -7,38 +7,37 @@
 ---
 
 ## Descrição
-- Informações a respeito arquitetura do SQL SERVER
+
+Informações a respeito da arquitetura do SQL Server
 
 ---
 
-## Hands-on  
-[Q0002 - SQL Server Create Database](../scripts/Q0002-create-database.sql)   
-[INST-Q0004 - SQL Physical Storage Layout](../../../dba-scripts/SQL-instance-information/INST-Q0004-physical-storage-layout.sql)  
+## Hands-on
 
-## Conteúdo adicional
-- https://docs.microsoft.com/en-us/sql/relational
+[Q0002 - SQL Server Create Database](../scripts/Q0002-create-database.sql)  
+[INST-Q0004 - SQL Physical Storage Layout](../../../dba-scripts/SQL-instance-information/INST-Q0004-physical-storage-layout.sql)
 
 ---
 
-## 1. Arquitetura do SQL Server
+## 1 - Arquitetura do SQL Server
 
 → Recomendado pela Microsoft manter as seguintes extensões:  
 - `.mdf` → Arquivo de dados  
 - `.ldf` → Arquivo de logs
 - `.ndf` → Arquivos secundários
 
----
+### Arquivo .mdf
 
-### Arquivo .mdf  
 → O arquivo com extensão `.mdf` é sempre o arquivo primário  
-→ Só existe 1  
-	
-### Arquivo .ndf  
-→ Os arquivos com extensão `.ndf` são arquivos secundários  
-→ Pode ter "n" secundários  
+→ Só existe 1
 
-## Porque criar mais de um arquivo de dados?
-	
+### Arquivo .ndf
+
+→ Os arquivos com extensão `.ndf` são arquivos secundários  
+→ Pode ter "n" secundários
+
+### Porque criar mais de um arquivo de dados?
+
 - 1º motivo - Aumentar a capacidade de armazenamento
 
 **Exemplo simplificado:**  
@@ -52,83 +51,81 @@
 3 - É criada uma tabela em outro arquivo de dados em um volume E:\ do storage  
 4 - Quando executar uma operação de JOIN entre essas tabelas o SQL consegue ler em paralelo essas tabelas  
 **Porque?**  
-→ Ele cria uma thread por arquivo de dados.   
-→ Estando esses arquivos de dados em discos diferentes ele tem como operar em paralelo ganhando desempenho.  
-
----
+→ Ele cria uma thread por arquivo de dados.  
+→ Estando esses arquivos de dados em discos diferentes ele tem como operar em paralelo ganhando desempenho.
 
 ### Arquivo .ldf
+
 → O arquivo `.ldf` é um registro sequencial das operações de atualização que ocorrem no banco de dados  
-→ É obrigatório pelo menos 1 arquivo de log   
+→ É obrigatório pelo menos 1 arquivo de log  
 → É um arquivo de escrita sequencial (LSN - Log Sequence Number)
 
 **Existe algum motivo de criar mais de um arquivo de log?**  
-→ Para desempenho não adianta nada devido a escrita sequencial   
-→ Aumentar o armazenamento  
+→ Para desempenho não adianta nada devido a escrita sequencial  
+→ Aumentar o armazenamento
 
 **Exemplo simplificado:**  
 1 - O arquivo de log está em um disco que está sem espaço  
-2 - É criado um segundo arquivo de log em outro disco/volume    
-3 - Quando encerra a gravação completa do log no primeiro arquivo e não tem mais espaço físico ele começa a gravar no segundo arquivo de log  
+2 - É criado um segundo arquivo de log em outro disco/volume  
+3 - Quando encerra a gravação completa do log no primeiro arquivo e não tem mais espaço físico ele começa a gravar no segundo arquivo de log
 
 ---
 
-## 2. Arquitetura interna do arquivo de dados
-	
-### Extents  
+## 2 - Arquitetura interna do arquivo de dados
+
+### Extents
+
 → Uma extent possui 8 páginas de 8 KB totalizando 64 KB  
 → Os dados são gravados em páginas de tamanho fixo  
-→ Essa é a unidade de crescimento ou redução dos arquivos   
-→ Sempre cresce multiplo de 64 KB  
+→ Essa é a unidade de crescimento ou redução dos arquivos  
+→ Sempre cresce múltiplo de 64 KB
 
 ---
 
-## 3. Bancos de Dados de Sistema
+## 3 - Bancos de Dados de Sistema
 
-### MASTER  
-→ Mais importante de todos       
+### MASTER
+
+→ Mais importante de todos  
 → Catálogo da instância, com informações de Metadata dos objetos de instância  
-→ Tem o nome dos bancos de dados que existem no banco    
-→ É nele que está a localização dos arquivos de dados e logs de todos os bancos de dados existentes    
-→ No processo de inicialização é o primeiro banco a ser inicializado    
-→ Sem ele inicializado o SQL não abre   
+→ Tem o nome dos bancos de dados que existem no banco  
+→ É nele que está a localização dos arquivos de dados e logs de todos os bancos de dados existentes  
+→ No processo de inicialização é o primeiro banco a ser inicializado  
+→ Sem ele inicializado o SQL não abre
 
----
+### MSDB
 
-### MSDB  			
-→ Armazena Metadata de diversas funcionalidades como SQL Agent   
-→ Armazena Metadata de histórico Backup e Restore   
+→ Armazena Metadata de diversas funcionalidades como SQL Agent  
+→ Armazena Metadata de histórico Backup e Restore
 
----
+### TEMPDB
 
-### TEMPDB  			
-→ Rascunho do SQL Server    
-→ Banco de dados de operações temporárias    
+→ Rascunho do SQL Server  
+→ Banco de dados de operações temporárias
 
----
+### MODEL
 
-### MODEL	
 → Modelo de criação para novos bancos de dados  
-→ É um template  
-	
----
+→ É um template
 
-### DISTRIBUTION  	
+### DISTRIBUTION
+
 → Metadata da Replicação  
 → Nem sempre está presente no SQL Server  
 → Só vai aparecer se for configurado banco de dados distribuído  
 → Mantém 3 papéis:  
 - Publishier → origem dos dados  
 - Distributor → quem gerencia  
-- Subscriber → destino dos dados  
+- Subscriber → destino dos dados
 
 ---
 
-## 4. Checkpoint  
+## 4 - Checkpoint
 
-## O que acontece quando executamos um UPDATE no SQL Server?
+### O que acontece quando executamos um UPDATE no SQL Server?
 
 ### Cenário
+
 Imagine uma aplicação conectada ao SQL Server executando um comando `UPDATE` para alterar registros em uma tabela.
 
 ### 4.1 - Execução inicial em memória (Buffer Cache)
@@ -186,19 +183,21 @@ Após o COMMIT:
 - Altera em memória  
 - Registra no log  
 - Altera em memória  
-- Registra no log  
+- Registra no log
 
 ### 4.5 - Execução do Processo de Checkpoint
 
 → Periodicamente o SQL Server executa o processo chamado **Checkpoint**
 
-## O CHECKPOINT:
+### O Checkpoint
+
 → Escreve as transações já finalizadas do Buffer Cache para os arquivos de dados (.mdf/.ndf).
 
-## Objetivos:
+### Objetivos
+
 - Garantir recuperação rápida em caso de falha  
 - Reduzir necessidade de REDO durante recovery  
-- Evitar escrita constante direta no disco  
+- Evitar escrita constante direta no disco
 
 ### Por que não escrever direto no disco?
 
@@ -208,12 +207,11 @@ Se cada UPDATE fosse gravado imediatamente no disco:
 → Ocorreriam Page Splits constantemente  
 → Haveria expansão contínua das **Extents (64 KB)**
 
-## Por isso o SQL Server utiliza:
+### Por isso o SQL Server utiliza
+
 - Cache em memória
 - Transaction Log
-- Checkpoints periódicos  
-
----
+- Checkpoints periódicos
 
 ### Resumo do fluxo cronológico
 
@@ -227,6 +225,9 @@ Se cada UPDATE fosse gravado imediatamente no disco:
 
 ---
 
+## Referências
 
-
-
+- [Arquivos e grupos de arquivos de banco de dados](https://learn.microsoft.com/pt-br/sql/relational-databases/databases/database-files-and-filegroups?view=sql-server-ver16)
+- [Guia de arquitetura de páginas e extensões](https://learn.microsoft.com/pt-br/sql/relational-databases/pages-and-extents-architecture-guide?view=sql-server-ver16)
+- [Pontos de verificação de banco de dados (Checkpoint)](https://learn.microsoft.com/pt-br/sql/relational-databases/logs/database-checkpoints-sql-server?view=sql-server-ver16)
+- [Guia de arquitetura e gerenciamento do log de transações](https://learn.microsoft.com/pt-br/sql/relational-databases/sql-server-transaction-log-architecture-and-management-guide?view=sql-server-ver16)
