@@ -1,4 +1,4 @@
-﻿# A0010 – Sql Data Types 
+﻿# A0010 – SQL Data Types
 
 > **Author:** Rafael Binda  
 > **Created:** 2026-02-28  
@@ -62,7 +62,7 @@ VARCHAR(10)
 - 'ABC' → 3 bytes
 - 'ABCDEFGHIJ' → 10 bytes 
 
-### Limites:
+**Limites**
 - `VARCHAR(n)` → até **8.000 bytes**
 - `VARCHAR(MAX)` → até **2 GB**
 
@@ -73,11 +73,9 @@ VARCHAR(10)
 - Pode armazenar até **2 GB**
 - Armazenamento fora da estrutura principal da linha
 - Deprecated (não utilizar em novos projetos)
-- Recomendado utilizar `VARCHAR` ao invés de `TEXT`  
-  
----
+- Recomendado utilizar `VARCHAR` ao invés de `TEXT`
 
-### 1.2 - Tipos Unicode (UTF-16)  
+### 1.2 - Tipos Unicode (UTF-16)
 
 → Armazenam caracteres usando **2 bytes por caractere**   
 → Necessário quando o sistema precisa suportar múltiplos idiomas, acentos especiais, caracteres asiáticos  
@@ -102,7 +100,7 @@ NCHAR(10)
   - (Quantidade de caracteres × 2 bytes)
   - + 2 bytes de controle
 
-### Limites:
+**Limites**
 - `NVARCHAR(n)` → até **4.000 caracteres**
 - `NVARCHAR(MAX)` → até **2 GB** mas só pode receber até 1GB de dados pois o espaço de armazenamento é de 2 bytes por caracter
 
@@ -174,8 +172,6 @@ Armazenam apenas números inteiros (sem casas decimais)
 | INT       | 4 bytes  | -2.147.483.648 a 2.147.483.647                         |
 | BIGINT    | 8 bytes  | -9.223.372.036.854.775.808 a 9.223.372.036.854.775.807 |
 
----
-
 ### 2.2 - Tipos Decimais (Precisos)
 
 Usados quando é necessário controle exato sobre casas decimais
@@ -200,7 +196,7 @@ Exemplo de valor máximo:
 ```
 9999999999.999999
 ```
-### Armazenamento
+**Armazenamento**
 → O tamanho em bytes varia conforme a precisão:
 | Precisão | Bytes |
 |----------|-------|
@@ -208,8 +204,6 @@ Exemplo de valor máximo:
 | 10–19    | 9 bytes |
 | 20–28    | 13 bytes |
 | 29–38    | 17 bytes |
-
----
 
 ### 2.3 - Tipos Aproximados (Ponto Flutuante)
 
@@ -358,8 +352,6 @@ Por que isso acontece?
 → FLOAT(53) é mais preciso  
 → Nenhum representa 0.1 exatamente  
 
----
-
 ### 2.4 - Tipos Monetários
 
 **MONEY**
@@ -373,10 +365,10 @@ Por que isso acontece?
 - Tamanho de armazenamento 4 bytes  
 - 4 casas decimais fixas  
 - Intervalo de `-214.748,3648` até `214.748,3647`
-- 
+
 ---
 
-### Atenção
+**Atenção**
 - **MONEY** e **SMALLMONEY** são limitados a 4 casas decimais
 - Podem causar arredondamentos indesejados
 - **Recomendação:** Preferir `DECIMAL` para valores financeiros
@@ -399,7 +391,7 @@ Por que isso acontece?
 
 ---
 
-### 3 - Tipo Lógico
+## 3 - Tipo Lógico
 
 **BIT**
 - Aceita apenas `0`, `1` ou `NULL`
@@ -504,7 +496,7 @@ Quando dizemos `O controle de NULL é feito na null bitmap`, significa que:
 
 ---
 
-### 4 - Tipos de Dados de Data e Hora
+## 4 - Tipos de Dados de Data e Hora
 
 Os tipos de dados de **data e hora** no SQL Server permitem armazenar datas, horários ou ambos  
 Alguns tipos existem desde as primeiras versões do SQL Server, enquanto outros foram introduzidos no **SQL Server 2008**
@@ -595,7 +587,7 @@ Utilizado quando é necessário registrar:
 
 **Boas Práticas**
 
-- Prefirir **DATETIME2** em novos projetos
+- Preferir **DATETIME2** em novos projetos
 - Usar **DATE** quando precisar apenas da data
 - Usar **TIME** quando precisar apenas do horário
 - Usar **DATETIMEOFFSET** quando o sistema precisar armazenar **timezone**
@@ -616,7 +608,7 @@ Utilizado quando é necessário registrar:
 
 ---
 
-### 5 - Tipos de Dados Especiais no SQL Server
+## 5 - Tipos de Dados Especiais no SQL Server
 
 O SQL Server possui alguns tipos de dados específicos utilizados para cenários especiais como:
 
@@ -692,7 +684,7 @@ WHERE Id = 1
 → RowVersion = `0x00000000000007D3`  
 → A aplicação guarda esse valor  
 
-**4** - Aconteçe o UPDATE
+**4** - Acontece o UPDATE
 
 ```sql
 UPDATE Produtos
@@ -878,10 +870,10 @@ Permite navegar facilmente entre:
 | GEOMETRY | Dados espaciais em plano |
 | GEOGRAPHY | Dados espaciais globais |
 
+---
 
+## Referências
 
-
-
-
-
+- [Tipos de dados (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/t-sql/data-types/data-types-transact-sql?view=sql-server-ver16)
+- [uniqueidentifier (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/t-sql/data-types/uniqueidentifier-transact-sql?view=sql-server-ver16)
 
