@@ -20,13 +20,6 @@ Documento com informações para instalação do SQL Server seguindo boas práti
 
 ---
 
-## Conteúdo adicional
-
-- https://learn.microsoft.com/en-us/sql/sql-server/editions-and-components-of-sql-server-2022?view=sql-server-ver16&preserve-view=true  
-- https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/configure-the-max-degree-of-parallelism-server-configuration-option?view=sql-server-ver17  
-
----
-
 ## Meu cenário
 
 → Versão: SQL Server 2022  
@@ -217,12 +210,17 @@ Shared feature directory (x86)
 ## 8 - Database Engine Configuration - TempDB
 
 → Para estudo nesse momento não alterar nada  
-→ Número de arquivos = número de cores lógicas (até 8 inicialmente)  
-→ Mesmo tamanho para todos os arquivos  
-→ Tamanho inicial mínimo recomendado: 512MB ou 1GB por arquivo  
-→ Autogrowth fixo (ex: 256MB ou 512MB)  
-→ Nao usar crescimento percentual  
-     
+→ Número de arquivos = número de processadores lógicos (até 8)  
+    → Se contention persistir após 8 arquivos: aumentar em múltiplos de 4  
+→ Todos os arquivos devem ter o mesmo tamanho inicial e o mesmo autogrowth  
+    → O algoritmo `proportional fill` depende de arquivos iguais para distribuir alocações de forma equilibrada  
+→ Tamanho inicial: pré-alocar conforme o workload típico do ambiente  
+    → Valor padrão do setup: 8 MB — ajustar para evitar autogrowth frequente durante execução  
+→ Autogrowth fixo recomendado pela Microsoft: **64 MB** por arquivo  
+    → Ambientes maiores podem usar 256 MB ou 512 MB — sempre fixo, nunca percentual  
+→ SQL Server 2016 e posteriores: trace flags 1118 e 1117 **não são mais necessários**  
+    → Alocação uniforme e crescimento simultâneo dos arquivos já são built-in nessa versão  
+
 ---
 
 ## 9 - Database Engine Configuration - MaxDOP
@@ -232,7 +230,7 @@ Shared feature directory (x86)
 - Acima de 8 cores: MaxDOP = 8  
 - Sempre validar se ha multiplos NUMA nodes
   
-→ Cuidado com o MaxDOP (verificar link disponível em Conteúdo adicional)
+→ Cuidado com o MaxDOP (verificar link disponível em Referências)
 
 ---
 
@@ -341,3 +339,9 @@ Shared feature directory (x86)
 ## 14 - Instalar o SSMS - SQL Server Management Studio
 
 ---
+
+## Referências
+
+- [Edições e componentes do SQL Server 2022](https://learn.microsoft.com/pt-br/sql/sql-server/editions-and-components-of-sql-server-2022?view=sql-server-ver16)
+- [Configurar o grau máximo de paralelismo (MaxDOP)](https://learn.microsoft.com/pt-br/sql/database-engine/configure-windows/configure-the-max-degree-of-parallelism-server-configuration-option?view=sql-server-ver16)
+- [Banco de dados tempdb – configuração e otimização](https://learn.microsoft.com/pt-br/sql/relational-databases/databases/tempdb-database?view=sql-server-ver16)
