@@ -1,27 +1,20 @@
-﻿# A0008 – Sql Server Fundamentals
+# A0008 – SQL Server Fundamentals
 
 > **Author:** Rafael Binda  
 > **Created:** 2026-02-23  
-> **Version:** 1.0 
+> **Version:** 1.0  
 
 ---
 
 ## Descrição
 
-- Tipos de instruções SQL
-- Ferramentas para executar SQL
-- Bath
-- Comentário
-- Regras para nomes de objetos
-- Variáveis
-- Operadores
-- Instruções dinâmicas
-- Controlando o fluxo de execução
+Documento sobre os fundamentos do SQL Server, abrangendo tipos de instruções SQL (DDL, DML, DCL, DQL), ferramentas de execução, batches, comentários, regras para nomes de objetos, variáveis, operadores, instruções dinâmicas e controle de fluxo de execução.
 
 ---
 
-## Hands-on  
-[Q0003 - SQL Server Fundamentals](../scripts/Q0003-sql-fundamentals.sql)   
+## Hands-on
+
+[Q0003 - SQL Server Fundamentals](../scripts/Q0003-sql-fundamentals.sql)
 
 ---
 
@@ -31,7 +24,7 @@
 - `CREATE`
 - `ALTER`
 - `DROP`
-  
+
 → Usado para **definir / alterar estruturas** (tabelas, índices, schemas, views, procedures etc.)
 
 ### DCL — Data Control Language
@@ -137,7 +130,7 @@ Sugestão:
 
 - **instância:** nome do servidor/instância
 - **banco:** database
-- **schema:** “pasta lógica” de objetos (muitos bancos usam só `dbo`)
+- **schema:** "pasta lógica" de objetos (muitos bancos usam só `dbo`)
 - **objeto:** nome real (tabela/view/proc)
 
 **Por que qualificar `schema.objeto`?**
@@ -160,7 +153,7 @@ Sugestão:
 **Sintaxe:** `DECLARE @Nome Tipo(Tamanho)`
 
 Exemplo:
-``` sql
+```sql
 DECLARE @X INT;
 SET @X = 10;
 
@@ -172,7 +165,7 @@ SELECT @X AS Valor;
 → Após o `GO`, a variável deixa de existir
 
 Exemplo:
-``` sql
+```sql
 DECLARE @X INT = 10;
 GO
 SELECT @X;  -- Erro: variável não existe mais
@@ -214,11 +207,17 @@ Precedência: Usar `(...)` para deixar explícito
 
 ---
 
-## 10) Controlando fluxo de execução
+## 10 - Controlando fluxo de execução
 
 - Bloco: `BEGIN ... END`
 - Condicional: `IF ... ELSE`
 - Loop: `WHILE`
 - Lista/decisão: `CASE`
 
+---
 
+## Referências
+
+- [Instruções Transact-SQL (DDL, DML, DCL)](https://learn.microsoft.com/pt-br/sql/t-sql/statements/statements?view=sql-server-ver16)
+- [sp_executesql (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/relational-databases/system-stored-procedures/sp-executesql-transact-sql?view=sql-server-ver16)
+- [Controle de fluxo (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/t-sql/language-elements/control-of-flow?view=sql-server-ver16)
