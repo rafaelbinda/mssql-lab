@@ -1,13 +1,16 @@
 # A0001 – Study Environment Setup
->
+
 > **Author:** Rafael Binda  
 > **Created:** 2026-02-09  
 > **Version:** 4.0
 
-## Descrição:
+---
+
+## Descrição
 
 Provisionamento de ambiente de laboratório para Microsoft SQL Server utilizando Hyper-V no Windows Home.
 
+---
 
 ## Ambiente Utilizado
 
@@ -16,42 +19,42 @@ Provisionamento de ambiente de laboratório para Microsoft SQL Server utilizando
 - Windows Server 2025 Evaluation
 - Microsoft SQL Server (uso em laboratório)
 
+---
+
 ## Observação
 
 Este ambiente é destinado exclusivamente para estudo e não deve ser utilizado em produção.
 
 ---
-# Procedimento Completo
----
 
-## 1. Habilitar Hyper-V no Windows Home Edition
+## 1 - Habilitar Hyper-V no Windows Home Edition
 
 1.1 - Clique no link abaixo para abrir o script:  
    [A0001_X_EnableHyperV_Windows_Home.bat](../tools/A0001_X_EnableHyperV_Windows_Home.bat)
 
 1.2 - Na página do GitHub, clique em **Download** ou **Raw** para baixar o arquivo.
 
-1.3 Após o download, clique com o botão direito no arquivo e selecione **Executar como administrador**
+1.3 - Após o download, clique com o botão direito no arquivo e selecione **Executar como administrador**
 
-1.4 Ao finalizar o processo, reinicie o computador
+1.4 - Ao finalizar o processo, reinicie o computador
 
 ---
 
-## 2. Verificar se o Hyper-V foi habilitado  
+## 2 - Verificar se o Hyper-V foi habilitado  
 
 → Comando digitado utilizando CMD:  
 ```cmd
 systeminfo
-``` 
+```
 
-### Resultado esperado: 
+**Resultado esperado:**
 ```cmd
 Requisitos do Hyper-V: Hipervisor detectado. Recursos necessários para o Hyper-V não serão exibidos.
-``` 
+```
 
 ---
 
-## 3. Confirmar Recursos do Hyper-V   
+## 3 - Confirmar Recursos do Hyper-V   
 
 → No CMD, execute: `optionalfeatures`
 
@@ -65,7 +68,7 @@ Requisitos do Hyper-V: Hipervisor detectado. Recursos necessários para o Hyper-
 
 ---
 
-## 4. Criar Comutador Virtual Externo  
+## 4 - Criar Comutador Virtual Externo  
 
 → Lado esquerdo -> Gerenciador do Hyper-V -> Clicar sobre o nome da máquina corrente DESKTOP-F86B6PH  
 → Lado direito  -> Gerenciador de Comutador Virtual -> Cria um NOVO EXTERNO para que as máquina enxerguem fora do host  
@@ -75,8 +78,8 @@ Requisitos do Hyper-V: Hipervisor detectado. Recursos necessários para o Hyper-
 
 ---
 
-## 5. Criar Nova Máquina Virtual
-	
+## 5 - Criar Nova Máquina Virtual
+
 → De um nome: SRVSQLSERVER  
 → Identificar o diretório que vai ficar salva a VM  
 → Selecionar Geração 2  
@@ -87,7 +90,7 @@ Requisitos do Hyper-V: Hipervisor detectado. Recursos necessários para o Hyper-
 
 ---
 
-## 6. Configurar Hardware da VM  
+## 6 - Configurar Hardware da VM  
 
 → Sobre a VM SRVSQLSERVER -> Acessar Configurações e:  
 → Alterar o número de processadores (escolhi 4)  
@@ -99,7 +102,7 @@ Requisitos do Hyper-V: Hipervisor detectado. Recursos necessários para o Hyper-
 
 ---
 
-## 7. Adicionar a ISO 
+## 7 - Adicionar a ISO 
 
 → Acessar Controlador SCSI → Selecionar Unidade de DVD → Adicionar → Arquivo de imagem  
 → Procurar: E:\SQLEXPERIENCE\M02A01 - Windows Server 2025.iso  
@@ -107,7 +110,7 @@ Requisitos do Hyper-V: Hipervisor detectado. Recursos necessários para o Hyper-
 
 ---
 
-## 8. Ajustar Firmware
+## 8 - Ajustar Firmware
 
 → Mover a Unidade de DVD como primeiro item da lista (para que de o boot pela ISO)  
 → Mover o Disco Rígido como 2º item da lista  
@@ -115,37 +118,38 @@ Requisitos do Hyper-V: Hipervisor detectado. Recursos necessários para o Hyper-
 
 ---
 
-## 9. Iniciar VM
+## 9 - Iniciar VM
 
 → É necessário clicar dentro da VM para iniciar pelo DVD
 
 ---
 
-## 10. Instalar o Windows
+## 10 - Instalar o Windows
 
 → Selecionar Required Only  
 → Try Windows Admin Center ... (Marcar Don't show this message again)
 
 ---
 
-## 11. Configuração Inicial Local Server
+## 11 - Configuração Inicial Local Server
 
 → Ajustar Time Zone  
-→ Ajustar idioma para Português   	
+→ Ajustar idioma para Português  
 → Habilitar Remote Desktop  
 → Renomear a máquina para SRVSQLSERVER
 
 ---
 
-## 12. Licenciamento Windows 2025 Evaluation
+## 12 - Licenciamento Windows 2025 Evaluation
 
-→ O Limite de uso/tempo máximo do dessa versão do Windows é 180 dias  
-→ Para Verificar prazo de validade utilizando o CMD utilizar o comando: `slmgr.vbs /dlv`  
+→ O Limite de uso/tempo máximo dessa versão do Windows é 180 dias  
+→ Para verificar prazo de validade utilizando o CMD utilizar o comando: `slmgr.vbs /dlv`  
 → É possível renovar até 6x usando o comando: `slmgr.vbs /rearm`
 
 ---
 
+## Referências
 
-
-
-
+- [Habilitar o Hyper-V no Windows](https://learn.microsoft.com/pt-br/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v)
+- [Criar uma máquina virtual com o Hyper-V no Windows](https://learn.microsoft.com/pt-br/virtualization/hyper-v-on-windows/quick-start/create-virtual-machine)
+- [Avaliação do Windows Server 2025](https://learn.microsoft.com/pt-br/windows-server/get-started/get-started-with-windows-server)
