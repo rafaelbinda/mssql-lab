@@ -73,7 +73,7 @@ CHAR(10) = 10 bytes
 → Mais recente  
 → Cada caractere utiliza 2 bytes para ser armazenado  
 → Cada caractere é armazenado como número  
-→ Máximo de 65.563 caracteres  
+→ Máximo de 65.536 caracteres (2^16); com caracteres suplementares (SC) até 1.114.112  
 → Não há risco de perda de acentos, símbolos ou caracteres internacionais  
 → Cabe TODOS os caracteres/símbolos/letras/números existentes no mundo  
 → Unicode é o padrão global  
@@ -372,3 +372,10 @@ ON TabelaA.Coluna COLLATE Latin1_General_CI_AS = TabelaB.Coluna
 → Documentar Collation no README do projeto  
 
 ---
+
+## Referências
+
+- [Suporte a ordenações e Unicode – SQL Server](https://learn.microsoft.com/pt-br/sql/relational-databases/collations/collation-and-unicode-support?view=sql-server-ver16)
+- [sys.fn_helpcollations – listar ordenações disponíveis](https://learn.microsoft.com/pt-br/sql/relational-databases/system-functions/sys-fn-helpcollations-transact-sql?view=sql-server-ver16)
+- [Nome de ordenação do Windows](https://learn.microsoft.com/pt-br/sql/t-sql/statements/windows-collation-name-transact-sql?view=sql-server-ver16)
+- [Nome de ordenação do SQL Server](https://learn.microsoft.com/pt-br/sql/t-sql/statements/sql-server-collation-name-transact-sql?view=sql-server-ver16)
