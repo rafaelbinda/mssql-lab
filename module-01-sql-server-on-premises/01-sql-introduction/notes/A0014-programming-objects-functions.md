@@ -1,4 +1,5 @@
-﻿# A0014 – Sql Server Programming Objects
+# A0014 – SQL Server Programming Objects
+
 > **Author:** Rafael Binda  
 > **Created:** 2026-03-17  
 > **Version:** 1.0 
@@ -38,16 +39,12 @@ UPDATE
 DELETE
 ```
 
----
-
 ### 1 - Tipos de Funções
 
 No SQL Server existem dois grandes grupos:
 
 - **Funções de Sistema**
 - **Funções Definidas pelo Usuário (User Defined Functions - UDF)**
-
----
 
 #### 1.1 - Funções de Sistema
  
@@ -72,8 +69,6 @@ CAST()
 CONVERT()
 ```
 
----
-
 #### 1.2 - Funções Definidas pelo Usuário (UDF) 
 
 São funções criadas por desenvolvedores ou DBAs  
@@ -82,8 +77,6 @@ Elas permitem encapsular lógica reutilizável dentro do banco de dados
 Existem dois tipos principais:
 - **Scalar Functions**
 - **Table-Valued Functions**
-
----
 
 ##### 1.2.1 - Scalar Function 
 
@@ -124,8 +117,6 @@ BEGIN
 END;
 ```
 
----
-
 **Exemplo de uso — Sofá de 2 e 3 lugares**
 
 Suponha que precisa ser feito o carregamento de dois itens em um caminhão:
@@ -164,8 +155,6 @@ Em sistemas logísticos, ambos os fatores normalmente são analisados:
 - **Peso máximo suportado**
 - **Volume máximo disponível**
 
----
-
 ##### 1.2.2 - Table-Valued Function 
 
 Uma **Table-Valued Function** retorna uma **tabela de resultados**  
@@ -199,8 +188,6 @@ FROM dbo.ufn_GetOrdersByCustomer(10);
 
 **Nesse caso, a função retorna uma tabela de resultados** 
 
----
-
 Boas Práticas:
 - Evitar colocar lógica muito pesada em funções
 - Preferir **Table-Valued Functions** em cenários que exigem melhor desempenho
@@ -214,8 +201,6 @@ dbo.ufn_CalculateDiscount
 dbo.ufn_GetOrdersByCustomer
 ```
 
----
-
 **Resumo**
 
 | Tipo | Retorno | Observação |
@@ -223,3 +208,10 @@ dbo.ufn_GetOrdersByCustomer
 | Sistema | valor ou tabela | fornecida pelo SQL Server |
 | Scalar Function | 1 valor | recebe parâmetros e retorna um valor |
 | Table-Valued Function | tabela | pode ser usada em consultas SELECT |
+
+---
+
+## Referências
+
+- [Funções definidas pelo usuário](https://learn.microsoft.com/pt-br/sql/relational-databases/user-defined-functions/user-defined-functions?view=sql-server-ver16)
+- [CREATE FUNCTION (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/t-sql/statements/create-function-transact-sql?view=sql-server-ver16)

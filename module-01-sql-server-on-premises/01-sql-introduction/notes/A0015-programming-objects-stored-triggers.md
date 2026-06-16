@@ -1,4 +1,5 @@
-﻿# A0015 – Sql Server Programming Objects
+# A0015 – SQL Server Programming Objects
+
 > **Author:** Rafael Binda  
 > **Created:** 2026-03-17  
 > **Version:** 1.0 
@@ -20,21 +21,15 @@ Este documento apresenta uma visão geral sobre Triggers no SQL Server, incluind
 
 ## SQL Server Triggers 
 
-
 ### O que é uma Trigger?
 
 Uma **Trigger** é um objeto de banco de dados que executa automaticamente um conjunto de comandos SQL quando ocorre um determinado evento  
 Triggers **não podem ser executadas diretamente pelo usuário**, pois são acionadas automaticamente quando o evento associado ocorre  
 Esse evento pode ser:
-- Uma operação de
-- **INSERT**
-- **UPDATE**
-- **DELETE**
-- Ou eventos administrativos no banco ou instância
+- Uma operação de **INSERT**, **UPDATE** ou **DELETE**
+- Eventos administrativos no banco ou instância
 
----
-
-#### 1 - Características das Triggers
+### 1 - Características das Triggers
 
 - Executam automaticamente após um evento
 - Não podem ser chamadas diretamente pelo usuário
@@ -42,17 +37,13 @@ Esse evento pode ser:
 - Podem gerar **impacto de desempenho** se utilizadas de forma excessiva
 - Podem aumentar a carga de trabalho na **tempdb**, dependendo da operação executada  
 
----
-
-#### 2 - Tabelas Virtuais INSERTED e DELETED
+### 2 - Tabelas Virtuais INSERTED e DELETED
 
 Durante a execução de uma Trigger, o SQL Server disponibiliza duas tabelas especiais que existem **somente durante a execução da trigger**:  
 - `INSERTED`
 - `DELETED`
 
 Fora do contexto da Trigger essas tabelas **não podem ser acessadas**  
-
----
 
 #### 2.1 - Operação INSERT 
 
@@ -69,8 +60,6 @@ FROM INSERTED;
 
 → Isso permite identificar **quais dados o usuário inseriu no banco de dados**
 
----
-
 #### 2.2 - Operação DELETE 
 
 Quando ocorre um **DELETE**, o SQL Server cria uma tabela chamada `DELETED`  
@@ -86,9 +75,7 @@ FROM DELETED;
 
 Assim é possível verificar **quais dados foram excluídos**  
 
----
-
-#### 3 - Operação UPDATE 
+### 3 - Operação UPDATE 
 
 Em operações de **UPDATE**, ambas as tabelas ficam disponíveis  
 Isso permite comparar os valores antes e depois da modificação  
@@ -98,9 +85,7 @@ Isso permite comparar os valores antes e depois da modificação
 | `DELETED` | valores **antes da alteração** |
 | `INSERTED` | valores **após a alteração** |
 
----
-
-**Exemplo conceitural das operações**
+**Exemplo conceitual das operações**
 
 ```sql
 IF EXISTS (SELECT 1 FROM INSERTED) 
@@ -122,8 +107,6 @@ BEGIN
 END
 ```
 
----
-
 ### 4 - Tipos de Trigger
 
 #### 4.1 - Trigger DML 
@@ -143,7 +126,7 @@ Elas são executadas quando ocorre:
 → Tabela de auditoria: `Audit_Customers`  
 
 **Resultado esperado:**  
-Quando ocorrer algum `INSERT` ou `UPDATE`, as informações a seguir serão armazendos na tabela de auditoria:  
+Quando ocorrer algum `INSERT` ou `UPDATE`, as informações a seguir serão armazenadas na tabela de auditoria:  
 → ID  
 → Operation Type  
 → User  
@@ -154,8 +137,6 @@ Quando ocorrer algum `INSERT` ou `UPDATE`, as informações a seguir serão arma
 → MiddleName  
 → LastName  
 → Deleted (flag lógica 0 ou 1)  
-
----
 
 #### 4.2 - Trigger DDL 
 
@@ -180,8 +161,6 @@ BEGIN
 
 END 
 ```
-
----
 
 #### 4.3 - Trigger de Login 
 
@@ -217,19 +196,15 @@ BEGIN
 
 END;
 ```
----
 
 **Boas Práticas**
 
-Triggers devem ser utilizadas com cuidado
+Triggers devem ser utilizadas com cuidado  
 Boas práticas incluem:  
 - Evitar lógica complexa dentro de triggers
 - Evitar operações demoradas
 - Utilizar triggers principalmente para **auditoria ou validação**
 - Sempre considerar o impacto no desempenho
- 
-
----
 
 **Resumo**
 
@@ -241,3 +216,10 @@ Boas práticas incluem:
 | Login Trigger | Instância | LOGIN |
 
 ---
+
+## Referências
+
+- [Triggers DML](https://learn.microsoft.com/pt-br/sql/relational-databases/triggers/dml-triggers?view=sql-server-ver16)
+- [Triggers DDL](https://learn.microsoft.com/pt-br/sql/relational-databases/triggers/ddl-triggers?view=sql-server-ver16)
+- [Triggers de logon](https://learn.microsoft.com/pt-br/sql/relational-databases/triggers/logon-triggers?view=sql-server-ver16)
+- [CREATE TRIGGER (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/t-sql/statements/create-trigger-transact-sql?view=sql-server-ver16)

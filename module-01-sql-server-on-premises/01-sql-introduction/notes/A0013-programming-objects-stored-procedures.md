@@ -1,4 +1,5 @@
-﻿# A0013 – Sql Server Programming Objects
+﻿# A0013 – SQL Server Programming Objects
+
 > **Author:** Rafael Binda  
 > **Created:** 2026-03-17  
 > **Version:** 1.0 
@@ -48,8 +49,6 @@ Exemplo:
 EXEC sp_helpdb;
 ```
 
----
-
 #### 1.2 - Stored Procedures Estendidas 
 
 São procedures desenvolvidas utilizando **linguagem C ou C++** e carregadas no SQL Server como bibliotecas externas  
@@ -65,8 +64,6 @@ Exemplo:
 ```sql
 EXEC xp_cmdshell 'dir';
 ```
-
----
 
 #### 1.3 - Stored Procedures Locais 
 
@@ -93,8 +90,6 @@ Execução:
 EXEC dbo.usp_GetCustomers;
 ```
 
----
-
 #### 1.4 - Stored Procedures com Parâmetros 
 
 Uma stored procedure pode receber parâmetros para tornar sua execução dinâmica
@@ -117,7 +112,6 @@ Execução:
 ```sql
 EXEC dbo.usp_GetCustomerById @CustomerID = 10;
 ```
----
 
 #### 1.5 - Stored Procedures Temporárias 
 
@@ -154,8 +148,6 @@ EXEC #usp_TempProcedure;
 | Estendida | `xp_` | Procedures desenvolvidas em C/C++ para executar operações externas (mantidas por compatibilidade, não recomendado) |
 | Local | definido pelo usuário | Procedures criadas por desenvolvedores ou DBAs para encapsular lógica de negócio |
 | Temporária | `#` (local) / `##` (global) | Criadas no banco **tempdb** para uso temporário; pouco utilizadas na prática |
-
----
 
 ### 2 - Vantagens e Benefícios do Uso de Stored Procedures
 
@@ -396,8 +388,6 @@ São utilizados para enviar valores para dentro da procedure
 - São os mais comuns
 - Podem ser utilizados em filtros, cálculos e regras de negócio
 
----
-
 ##### 4.2.2 - Parâmetros com valor padrão   
 Permitem tornar o parâmetro opcional na execução  
 
@@ -484,7 +474,7 @@ EXEC SchemaName.ProcedureName
 
 ---
 
-### 5.1.2 - OUTPUT vs SELECT
+#### 5.1.2 - OUTPUT vs SELECT
 
 | Característica | OUTPUT | SELECT |
 |---|---|---|
@@ -656,19 +646,14 @@ Permite executar diferentes blocos de código com base em uma condição
 - `IF` → executa quando a condição é verdadeira
 - `ELSE` → executa quando a condição é falsa
 
----
-
 ##### WHILE
 Permite repetir um bloco de código enquanto uma condição for verdadeira  
 - Utilizado para loops
 - Deve ser usado com cuidado para evitar execuções longas
 
----
-
 ##### BREAK
 Interrompe a execução de um loop (`WHILE`) antes que a condição seja encerrada naturalmente  
 
----
 ##### CONTINUE
 Interrompe a iteração atual do loop e passa para a próxima execução  
 
@@ -776,3 +761,8 @@ Os cursores são úteis para:
 Mesmo assim, devem ser utilizados com cautela devido ao impacto em performance
 
 ---
+
+## Referências
+
+- [Stored Procedures (Mecanismo de Banco de Dados)](https://learn.microsoft.com/pt-br/sql/relational-databases/stored-procedures/stored-procedures-database-engine?view=sql-server-ver16)
+- [CREATE PROCEDURE (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/t-sql/statements/create-procedure-transact-sql?view=sql-server-ver16)

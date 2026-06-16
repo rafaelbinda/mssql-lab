@@ -1,4 +1,5 @@
-﻿# A0012 – Sql Server Programming Objects
+# A0012 – SQL Server Programming Objects
+
 > **Author:** Rafael Binda  
 > **Created:** 2026-03-11  
 > **Version:** 4.0 
@@ -41,16 +42,12 @@ Exemplo:
 
 → Dessa forma, a administração de permissões fica **mais simples e mais segura**  
 
----
-
 ### 2 - Camada de abstração
 
 Views criam uma **camada de abstração entre a aplicação e a estrutura das tabelas**, isso permite:  
 - Alterar tabelas internas sem impactar diretamente a aplicação
 - Centralizar regras de consulta
 - Padronizar acesso aos dados
-
----
 
 ### 3 - Características importantes das Views
 
@@ -63,8 +60,6 @@ Views criam uma **camada de abstração entre a aplicação e a estrutura das ta
   - `GROUP BY`
   - `WHERE`
 - Apesar disso, o resultado final é sempre **um único SELECT**
-
----
 
 ### 4 - Como o SQL Server executa uma View
 
@@ -194,17 +189,12 @@ GO
 | Pode usar SELECT *	|sim	| não |
 | Indexed view	| não	| sim |
 
-
----
-
 ### 5 - Consulta na view 
 
 ```sql
 SELECT *
 FROM Sales.vw_CustomersOrders
 ```
-
----
 
 ### 6 - Resolução dinâmica da view 
 
@@ -223,8 +213,6 @@ FROM (
 ```
 
 → Esse processo é chamado de **resolução dinâmica da view**  
-
----
 
 ### 7 - Desempenho
 
@@ -259,3 +247,8 @@ O plano de execução deve ser interpretado:
 **Faça a leitura do plano de execução ao executar a mesma consulta SEM view**  
 
 ---
+
+## Referências
+
+- [Views (SQL Server)](https://learn.microsoft.com/pt-br/sql/relational-databases/views/views?view=sql-server-ver16)
+- [CREATE VIEW (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/t-sql/statements/create-view-transact-sql?view=sql-server-ver16)
