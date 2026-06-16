@@ -7,7 +7,8 @@
 ---
 
 ## Descrição
-Informações a respeito da versão do SQL SERVER
+
+Informações a respeito da versão do SQL Server
 
 ---
 
@@ -26,75 +27,78 @@ Informações a respeito da versão do SQL SERVER
 
 ---
 
-## 1. Versão do SQL Server
+## 1 - Versão do SQL Server
 
-### Cenário de risco:
+### Cenário de risco
+
 → 1º - Ao executar o PortQry a versão exibida é a 16.0.1000.6  
 → 2º - Ao identificar que está na versão 16.0.1000.6 é possível verificar no site da Microsoft qual é a versão que está instalada atualmente através do endereço abaixo:  
-https://learn.microsoft.com/pt-br/troubleshoot/sql/releases/download-and-install-latest-updates#sql-server-2022  
+[Atualizações mais recentes e histórico de versões do SQL Server](https://learn.microsoft.com/pt-br/troubleshoot/sql/releases/download-and-install-latest-updates#sql-server-2022)  
 → 3º - Olhando a história de atualizações de segurança do Microsoft SQL Server 2022, há vulnerabilidades de segurança listadas nas notas de atualização que podem ser exploradas por invasores se a instância estiver desatualizada (como no caso da versão 16.0.1000.6 que foi lançada em novembro de 2022).  
-→ 4º - Se for contar a quantidade de CU disponíveis de novembro de 2026 até a data de 15/02/2026 existem 48 atualizações após a versão 16.0.1000.6  
-	
-### PROBLEMA:
+→ 4º - Se for contar a quantidade de CU disponíveis de novembro de 2022 até a data de 15/02/2026 existem 48 atualizações após a versão 16.0.1000.6
 
-→  Se um invasor souber que um servidor roda SQL Server 2022 versão 16.0.1000.6 (RTM / sem atualizações), ele pode pesquisar no site de atualizações da Microsoft e identificar CVEs como CVE-2024-49021 e CVE-2024-49043, que permitem execução remota de código.  
-→ CVE = Common Vulnerabilities and Exposures/Vulnerabilidades e Exposições Comuns.   
-→ Com isso, teoricamente, um atacante sem autorização poderia explorar a falha e infiltrar-se no servidor.  
-	
+### PROBLEMA
+
+→ Se um invasor souber que um servidor roda SQL Server 2022 versão 16.0.1000.6 (RTM / sem atualizações), ele pode pesquisar no site de atualizações da Microsoft e identificar CVEs como CVE-2024-49021 e CVE-2024-49043, que permitem execução remota de código.  
+→ CVE = Common Vulnerabilities and Exposures/Vulnerabilidades e Exposições Comuns.  
+→ Com isso, teoricamente, um atacante sem autorização poderia explorar a falha e infiltrar-se no servidor.
+
 - CVE-2024-49021 – Vulnerabilidade de execução remota de código do Microsoft SQL Server
 - CVE-2024-49043 – Vulnerabilidade de execução remota de código em Microsoft.SqlServer.XEvent.Configuration.dll
-	
+
 → Essas CVEs permitem que um invasor remoto execute código arbitrário sem necessidade de credenciais elevadas, potencialmente assumindo o controle do servidor SQL se o sistema estiver nessa versão vulnerável (anterior às correções).
-		
+
 ---
 
-## 2. Diferença entre Linha Cumulative Update (CU) X Linha GDR (General Distribution Release)
-	
-### CU (Cumulative Update) inclui:
+## 2 - Diferença entre Linha Cumulative Update (CU) X Linha GDR (General Distribution Release)
+
+### CU (Cumulative Update)
+
 → Todas as correções de segurança  
 → Correções de bugs  
 → Correções de estabilidade  
 → Correções de performance  
 → Correções de features  
-→ E é cumulativa de verdade quando é feita a instalação da última CU recebe tudas as atualizações desde o RTM.
+→ E é cumulativa de verdade: quando é feita a instalação da última CU, recebe todas as atualizações desde o RTM.
 
 **Vantagem**
 → Ambiente mais saudável  
 → Menos incidentes  
 → Menos chamados misteriosos  
-→ Melhor performance  
-	
-**Desvantagem:**
+→ Melhor performance
+
+**Desvantagem**
 → Pode alterar comportamento interno  
 → Pode expor bugs novos (raro, mas possível)  
-→ Exige ambiente de homologação  
-	
----
+→ Exige ambiente de homologação
 
-### GDR (General Distribution Release) inclui:  
+### GDR (General Distribution Release)
+
 → Apenas correções de segurança críticas  
 → Nada de correção de bug funcional  
-→ Nada de melhoria de performance  
+→ Nada de melhoria de performance
 
-**Vantagem**  
-→ Menor risco de alteração no comportamento do engine  
+**Vantagem**
+→ Menor risco de alteração no comportamento do engine
 
-**Desvantagem:**  
+**Desvantagem**
 → Bugs conhecidos continuam existindo  
 → Problemas de performance não são corrigidos  
-→ Você pode ficar "preso" em limitações já resolvidas na linha CU  
+→ Você pode ficar "preso" em limitações já resolvidas na linha CU
 
 ---
 
-## 3. Níveis de versão
+## 3 - Níveis de versão
 
-- RTM  → 	Versão inicial
-- SP   → 	Grande pacote acumulativo (modelo antigo)
-- CU   → 	Atualização cumulativa mensal
-- GDR  → 	Apenas correção de segurança
+- RTM → Versão inicial
+- SP  → Grande pacote acumulativo (modelo antigo)
+- CU  → Atualização cumulativa mensal
+- GDR → Apenas correção de segurança
 
 ---
 
+## Referências
 
-
-
+- [Determinar qual versão do SQL Server está em execução](https://learn.microsoft.com/pt-br/troubleshoot/sql/releases/find-my-sql-version)
+- [Atualizações mais recentes e histórico de versões do SQL Server](https://learn.microsoft.com/pt-br/troubleshoot/sql/releases/download-and-install-latest-updates)
+- [@@VERSION (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/t-sql/functions/version-transact-sql-configuration-functions?view=sql-server-ver16)
