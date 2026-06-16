@@ -1,4 +1,5 @@
-﻿# A0011 – Transações e Concorrência
+# A0011 – Transações e Concorrência
+
 > **Author:** Rafael Binda  
 > **Created:** 2026-03-07  
 > **Version:** 3.0 
@@ -6,6 +7,7 @@
 ---
 
 ## Descrição
+
 Este documento apresenta informações a respeito de transações e concorrência no SQL Server
 
 ---
@@ -21,7 +23,7 @@ Este documento apresenta informações a respeito de transações e concorrênci
 
 ---
 
-## 1.0 - Comandos para Atualização de Dados
+## 1 - Comandos para Atualização de Dados
 Os comandos de atualização de dados são utilizados para **modificar o conteúdo armazenado nas tabelas** no banco de dados
 No SQL Server, os principais comandos são:  
 
@@ -33,7 +35,7 @@ Esses comandos fazem parte do grupo conhecido como **DML (Data Manipulation Lang
 
 ---
 
-## INSERT
+### INSERT
 
 O comando `INSERT` é utilizado para **inserir novos registros em uma tabela**  
 Ele permite adicionar dados explicitamente informados ou utilizar valores padrão definidos na estrutura da tabela  
@@ -48,9 +50,7 @@ INSERT INTO Alunos (Nome, Cidade, Curso)
 VALUES ('RAFAEL BINDA', 'CHAPECO', 'MICROSOFT SQL SERVER');
 ```
 
----
-
-## SELECT INTO
+### SELECT INTO
 
 O comando `SELECT INTO` permite **criar uma nova tabela a partir do resultado de uma consulta**  
 Esse recurso é frequentemente utilizado para:  
@@ -64,9 +64,8 @@ SELECT *
 INTO AlunosBackup
 FROM Alunos;
 ```
----
 
-## UPDATE
+### UPDATE
 
 O comando `UPDATE` é utilizado para **alterar valores de registros existentes em uma tabela**  
 A atualização pode ocorrer:  
@@ -92,9 +91,7 @@ INNER JOIN Enderecos E
 ON C.IdCliente = E.IdCliente;
 ```
 
----
-
-## DELETE
+### DELETE
 
 O comando `DELETE` é utilizado para **remover registros de uma tabela**  
 Assim como no `UPDATE`, é possível remover:  
@@ -108,7 +105,6 @@ Exemplo:
 DELETE FROM Alunos
 WHERE Nome = 'RAFAEL BINDA';
 ```
----
 
 ### Boas práticas ao modificar dados
 
@@ -122,7 +118,7 @@ Durante operações de atualização ou exclusão de dados, algumas práticas s�
 
 ---
 
-## 2.0 - Tratamento de Erro
+## 2 - Tratamento de Erro
 
 Durante a execução de comandos SQL podem ocorrer diversos tipos de erros, como:  
 - Violação de chave primária
@@ -157,8 +153,6 @@ PRINT 'Execução concluída com sucesso'
 TrataErro:
 PRINT 'Ocorreu um erro na execução'
 ```
-
----
 
 ### 2.2 - Tratamento de erros em versões atuais do SQL Server
 
@@ -295,7 +289,7 @@ Um exemplo clássico de transação ocorre em **operações bancárias**, onde �
 
 ---
 
-## 3.1 - Tipos de transações no SQL Server
+### 3.1 - Tipos de transações no SQL Server
 
 No SQL Server existem dois principais tipos de transações:
 - **Transações implícitas**
@@ -346,8 +340,6 @@ Mesmo sendo iniciada automaticamente, a transação precisa ser finalizada manua
 - `ROLLBACK`
 
 → Sem essa finalização, a transação permanecerá aberta na sessão  
-
----
 
 ### 3.1.2 - Transação Explícita 
 
@@ -625,7 +617,7 @@ EXEC sp_WhoIsActive
 
 ---
 
-### Outras consultas úteis para investigação estão disponíveis no Hands-On
+Outras consultas úteis para investigação estão disponíveis no Hands-On
 
 ---
 
@@ -671,9 +663,11 @@ Na maioria dos casos, deadlocks são causados por **problemas na lógica da apli
 
 **O papel do DBA é investigar o problema e orientar os desenvolvedores na correção da aplicação**
 
+---
 
+## Referências
 
-
-
-
-
+- [Transações (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/t-sql/language-elements/transactions-transact-sql?view=sql-server-ver16)
+- [TRY...CATCH (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/t-sql/language-elements/try-catch-transact-sql?view=sql-server-ver16)
+- [Guia de bloqueio de transações e controle de versão de linha](https://learn.microsoft.com/pt-br/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide?view=sql-server-ver16)
+- [Guia de deadlocks](https://learn.microsoft.com/pt-br/sql/relational-databases/sql-server-deadlocks-guide?view=sql-server-ver16)
