@@ -1,7 +1,7 @@
 # A0025 – Backup and Restore Exercises  
->**Author:** Rafael Binda  
->**Created:** 2026-04-12  
->**Version:** 2.0  
+> **Author:** Rafael Binda  
+> **Created:** 2026-04-12  
+> **Version:** 2.0  
 
 ---
 
@@ -14,8 +14,7 @@ Todos os cenários seguem o mesmo padrão com estratégia linha do tempo sequên
 ---
 ## Hands-on
 
-[Q0022 – Tail Log Backup (NO_TRUNCATE)](../scripts/Q0022-sql-tail-log-backup.sql)    
-
+[Q0022 - Tail Log Backup (NO_TRUNCATE)](../scripts/Q0022-sql-tail-log-backup.sql)
 
 ---
 
@@ -27,7 +26,7 @@ Todos os cenários seguem o mesmo padrão com estratégia linha do tempo sequên
 - BACKUP FULL diário às 18:00  
 - Utilizando banco de teste desenvolvimento e data warehouse  
 
-### Linha do tempo:  
+### Linha do tempo  
 
 - Segunda-feira 18:00 backup FULL  
 - Terça-feira 11:30 falha com perda do arquivo MDF  
@@ -37,12 +36,12 @@ Todos os cenários seguem o mesmo padrão com estratégia linha do tempo sequên
 1 - Restore do backup FULL de segunda-feira 18:00 WITH RECOVERY  
 2 - Não há possibilidade de aplicar backup de LOG pois o banco está em RECOVERY MODEL SIMPLE  
 
-### Resultado:  
+### Resultado  
 
 - O banco retorna ao último ponto consistente salvo no backup FULL de segunda-feira 18:00  
 - Perdeu todos os dados de segunda-feira 18:00:01 até terça-feira 11:30  
 
-### Análise final:  
+### Análise final  
 
 - O RECOVERY MODEL SIMPLE não permite backup de LOG  
 - Isso significa que toda a recuperação fica limitada ao último backup FULL disponível  
@@ -61,7 +60,7 @@ Todos os cenários seguem o mesmo padrão com estratégia linha do tempo sequên
 - BACKUP LOG diário em intervalos regulares  
 - Utilizando banco pequeno em ambiente de produção  
 
-### Linha do tempo:  
+### Linha do tempo  
 
 - Segunda-feira 18:00 backup FULL  
 - Terça-feira backups LOG às 08:00 09:00 e 10:00  
@@ -76,12 +75,12 @@ Todos os cenários seguem o mesmo padrão com estratégia linha do tempo sequên
 5 - Restore do backup LOG de terça-feira 10:00 WITH NORECOVERY  
 6 - Restore do TAIL LOG WITH RECOVERY  
 
-### Resultado:  
+### Resultado  
 
 - O banco é recuperado até o momento mais próximo possível da falha  
 - A perda de dados é mínima desde que o TAIL LOG seja executado com sucesso  
 
-### Análise final:  
+### Análise final  
 
 - Esse é um dos cenários clássicos de recuperação em ambiente de produção  
 - O TAIL LOG é essencial para preservar as transações ocorridas após o último backup LOG regular  
@@ -101,7 +100,7 @@ Todos os cenários seguem o mesmo padrão com estratégia linha do tempo sequên
 - BACKUP LOG diário a cada 1 hora das 08:00 às 17:00  
 - Utilizando bancos médios e grandes em ambiente de produção  
 
-### Linha do tempo:  
+### Linha do tempo  
 
 - Domingo 10:00 backup FULL  
 - Segunda-feira backups LOG às 08:00 09:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 e 17:00  
@@ -122,13 +121,13 @@ Todos os cenários seguem o mesmo padrão com estratégia linha do tempo sequên
 7 - Restore do backup LOG de quarta-feira 11:00 WITH NORECOVERY  
 7 - Restore do TAIL LOG WITH RECOVERY  
 
-### Resultado:  
+### Resultado  
 
 - O banco é recuperado com perda mínima de dados  
 - O uso do DIFFERENTIAL reduz a quantidade de LOGs necessários para o restore  
 - O tempo total de recuperação é menor do que em uma estratégia baseada apenas em FULL e LOG  
 
-### Análise final:  
+### Análise final  
 
 - O backup DIFFERENTIAL contém todas as alterações desde o último FULL base  
 - Isso reduz significativamente o trabalho de restore porque elimina a necessidade de aplicar todos os LOGs desde o FULL de domingo  
@@ -148,7 +147,7 @@ Todos os cenários seguem o mesmo padrão com estratégia linha do tempo sequên
 - BACKUP LOG diário a cada 1 hora das 08:00 às 17:00  
 - Utilizando banco grande com dados distribuídos entre múltiplos arquivos ou FILEGROUPS  
 
-### Linha do tempo:  
+### Linha do tempo  
 
 - Domingo 10:00 backup FULL  
 - Domingo backups LOG às 09:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 e 17:00  
@@ -169,13 +168,13 @@ Todos os cenários seguem o mesmo padrão com estratégia linha do tempo sequên
 6 - Restore do backup LOG de quarta-feira 11:00 WITH NORECOVERY   
 7 - Restore do TAIL LOG WITH RECOVERY  
 
-### Resultado:  
+### Resultado  
 
 - Apenas o arquivo afetado é restaurado  
 - O restante do banco não precisa passar por restore completo  
 - O tempo de indisponibilidade tende a ser menor do que em um restore integral do banco  
 
-### Análise final:  
+### Análise final  
 
 - Esse cenário mostra uma estratégia avançada para ambientes de grande porte  
 - FILE e FILEGROUP backup permitem recuperação granular de partes específicas do banco  
@@ -197,7 +196,7 @@ Todos os cenários seguem o mesmo padrão com estratégia linha do tempo sequên
 - BACKUP LOG diário a cada 1 hora das 08:00 às 17:00  
 - Ambiente de produção com execução manual de backup FULL fora da rotina oficial  
 
-### Linha do tempo:  
+### Linha do tempo  
 
 - Segunda-feira 18:00 backup FULL  
 - Terça-feira backup LOG às 08:00  
@@ -212,13 +211,13 @@ Todos os cenários seguem o mesmo padrão com estratégia linha do tempo sequên
 2 - Restore do backup FULL de terça-feira 11:00 WITH NORECOVERY  
 3 - Restore do TAIL LOG WITH RECOVERY  
 
-### Resultado:  
+### Resultado  
 
 - O banco pode ser recuperado utilizando o FULL mais recente  
 - O restore tende a ser mais rápido do que começar a partir do FULL de segunda-feira  
 - A perda de dados é mínima desde que o TAIL LOG seja obtido com sucesso  
 
-### Análise final:  
+### Análise final  
 
 - Um backup FULL adicional não quebra a cadeia de LOG, ou seja, os backups de LOG continuam válidos e podem ser aplicados normalmente no processo de restore  
 - Isso acontece porque a sequência de LSN utilizada pelos LOGs permanece contínua, independentemente da execução de novos backups FULL  
@@ -239,7 +238,7 @@ Todos os cenários seguem o mesmo padrão com estratégia linha do tempo sequên
 - Após a alteração foram executados backups LOG  
 - Nenhum novo backup FULL foi executado após a mudança do modelo  
 
-### Linha do tempo:  
+### Linha do tempo  
 
 - Segunda-feira 18:00 backup FULL  
 - Terça-feira 07:30 banco ainda operando em RECOVERY MODEL SIMPLE  
@@ -255,12 +254,12 @@ Todos os cenários seguem o mesmo padrão com estratégia linha do tempo sequên
 2 - Os backups LOG de terça-feira 09:00 10:00 e 11:00 não podem ser utilizados para restore  
 3 - Não existe possibilidade de recuperar as alterações feitas após segunda-feira 18:00 porque a cadeia de LOG não foi iniciada corretamente  
 
-### Resultado:  
+### Resultado  
 
 - O banco retorna ao estado do backup FULL de segunda-feira 18:00  
 - Perdeu todos os dados entre segunda-feira 18:00:01 e terça-feira 11:30  
 
-### Análise final:  
+### Análise final  
 
 - Alterar o banco de SIMPLE para FULL não inicializa automaticamente uma cadeia válida de LOG para restore  
 - Após a mudança para FULL é obrigatório executar um novo backup FULL para iniciar corretamente essa cadeia  
@@ -278,7 +277,7 @@ Todos os cenários seguem o mesmo padrão com estratégia linha do tempo sequên
 - O processo pode ter sido deixado em espera propositalmente para aplicação de DIFFERENTIAL e LOG  
 - Ou pode ter sido interrompido no meio por falha operacional, cancelamento (kill) ou incidente no ambiente  
 
-### Linha do tempo:  
+### Linha do tempo  
 
 - Segunda-feira 18:00 backup FULL disponível para restore  
 - Terça-feira 08:00 restore do backup FULL iniciado com NORECOVERY  
@@ -301,14 +300,14 @@ Caso 2 - O restore FULL foi interrompido no meio e não existe garantia de consi
 2 - Reaplicar toda a cadeia necessária de backups subsequentes com NORECOVERY  
 3 - Finalizar com RECOVERY somente ao término completo da sequência  
 
-### Resultado:  
+### Resultado  
 
 - No caso válido o banco pode ser colocado online com RECOVERY ou após aplicação da cadeia restante  
 - No caso interrompido o caminho seguro é reiniciar todo o processo de restore  
 - O banco permanece indisponível enquanto estiver em NORECOVERY ou em restore inconsistente  
 - A decisão correta depende de saber se o restore anterior chegou ou não ao final com sucesso  
 
-### Análise final:  
+### Análise final  
 
 - Esse cenário exige distinguir duas situações que podem parecer iguais visualmente mas são tecnicamente diferentes  
 - Um banco em RESTORING pode estar apenas aguardando a continuação normal do restore ou pode estar em estado não confiável por interrupção do processo  
@@ -329,7 +328,7 @@ Caso 2 - O restore FULL foi interrompido no meio e não existe garantia de consi
 - BACKUP LOG diário a cada 1 hora das 08:00 às 17:00  
 - Um backup FULL adicional foi executado fora da rotina oficial sem que a equipe considerasse o impacto sobre os diferenciais  
 
-### Linha do tempo:  
+### Linha do tempo  
 
 - Domingo 10:00 backup FULL  
 - Segunda-feira 18:00 backup DIFFERENTIAL  
@@ -347,13 +346,13 @@ Caso 2 - O restore FULL foi interrompido no meio e não existe garantia de consi
 3 - Restore do backup LOG de quarta-feira 11:00 WITH NORECOVERY  
 4 - Restore do TAIL LOG WITH RECOVERY  
 
-### Resultado:  
+### Resultado  
 
 - O backup DIFFERENTIAL de terça-feira 18:00 não pode ser utilizado  
 - A recuperação continua possível mas agora precisa começar pelo FULL mais recente  
 - Os LOGs posteriores ao FULL de quarta-feira continuam válidos para restore  
 
-### Análise final:  
+### Análise final  
 
 - Quando um novo backup FULL é executado ele redefine a base dos backups DIFFERENTIAL  
 - Isso significa que diferenciais anteriores deixam de ser compatíveis com o FULL base anterior para aquela estratégia de recuperação  
@@ -378,7 +377,7 @@ Caso 2 - O restore FULL foi interrompido no meio e não existe garantia de consi
 - BACKUP LOG diário a cada 1 hora das 08:00 às 17:00  
 - Ambiente crítico com necessidade de reduzir downtime ao máximo  
 
-### Linha do tempo:  
+### Linha do tempo  
 
 - Domingo 10:00 backup FULL  
 - Segunda-feira 18:00 backup do FILEGROUP2 FG_SALES  
@@ -400,14 +399,14 @@ Caso 2 - O restore FULL foi interrompido no meio e não existe garantia de consi
 6 - Restore do backup LOG de quarta-feira 11:00 WITH NORECOVERY  
 7 - Restore do TAIL LOG WITH RECOVERY  
 
-### Resultado:  
+### Resultado  
 
 - O restore é executado apenas sobre o FILEGROUP afetado  
 - FILEGROUP1 PRIMARY e FILEGROUP2 FG_SALES podem permanecer disponíveis conforme a estratégia adotada e o tipo de acesso realizado  
 - Objetos dependentes do FILEGROUP3 FG_HISTORY permanecem indisponíveis até a conclusão da recuperação  
 - O downtime total tende a ser menor do que em um restore completo do banco  
 
-### Análise final:  
+### Análise final  
 
 - Esse cenário demonstra recuperação avançada por FILEGROUP e o conceito de Piecemeal Restore  
 - Nem sempre é necessário restaurar o banco inteiro quando a falha está isolada em uma parte específica da estrutura física  
@@ -429,7 +428,7 @@ Caso 2 - O restore FULL foi interrompido no meio e não existe garantia de consi
 - Horário comercial: 08:00 às 20:00  
 - Operação logística: 20:00 às 02:00  
 
-### Linha do tempo:  
+### Linha do tempo  
 
 - Sábado 04:00 início do BACKUP FULL  
 - Domingo 08:00 início do horário comercial  
@@ -457,7 +456,7 @@ Evento de falha:
 2 - Os backups DIFFERENTIAL não podem ser utilizados pois dependem de um FULL base válido  
 3 - A cadeia de LOG não pode ser aplicada sem um FULL base consistente  
 
-#### Caminho possível de recuperação:
+#### Caminho possível de recuperação
 
 1 - Tentar realizar BACKUP do TAIL LOG WITH NO_TRUNCATE  
 2 - Caso o TAIL LOG seja realizado com sucesso, ele deverá ser utilizado ao final da sequência de restore  
@@ -471,7 +470,7 @@ Evento de falha:
      
 6 - Restore do TAIL LOG WITH RECOVERY  
 
-#### Caso o TAIL LOG não possa ser realizado:
+#### Caso o TAIL LOG não possa ser realizado
 
 1 - Restore do BACKUP FULL válido WITH NORECOVERY  
 2 - Restore sequencial dos BACKUP LOG até o último disponível WITH NORECOVERY  
@@ -479,7 +478,7 @@ Evento de falha:
 
 ---
 
-### Resultado:  
+### Resultado  
 
 - O banco será recuperado a partir do último FULL válido disponível  
 - Todos os dados entre esse FULL e o último LOG aplicado poderão ser recuperados  
@@ -489,7 +488,7 @@ Evento de falha:
 
 ---
 
-### Análise final:  
+### Análise final  
 
 - O principal erro desse cenário é a interrupção recorrente do BACKUP FULL sem garantir um novo FULL válido  
 - Sem um FULL base consistente não é possível utilizar DIFFERENTIAL nem garantir uma cadeia de recuperação eficiente  
@@ -511,7 +510,7 @@ Evento de falha:
 - BACKUP FULL diário às 18:00  
 - BACKUP LOG em intervalos regulares  
 
-### Linha do tempo:  
+### Linha do tempo  
 
 - Segunda-feira 18:00 backup FULL  
 - Terça-feira backups LOG às 08:00 09:00 10:00 e 11:00  
@@ -528,12 +527,12 @@ Evento de falha:
 6 - Restore do backup LOG de terça-feira 11:00 WITH NORECOVERY  
 7 - Restore do TAIL LOG WITH STOPAT 'Terça-feira 11:14:59' WITH RECOVERY  
 
-### Resultado:  
+### Resultado  
 
 - O banco é restaurado para o momento imediatamente anterior ao erro  
 - A operação incorreta de DELETE não é aplicada  
 
-### Análise final:  
+### Análise final  
 
 - STOPAT permite controle preciso baseado em data e hora  
 - Depende da identificação correta do momento do erro  
@@ -550,7 +549,7 @@ Evento de falha:
 - Uso de transações marcadas para controle de deploy  
 - BACKUP FULL e LOG conforme estratégia padrão  
 
-### Linha do tempo:  
+### Linha do tempo  
 
 - Segunda-feira 18:00 backup FULL  
 - Terça-feira 10:00 início de deploy com transação marcada (Deploy_V1)  
@@ -565,7 +564,7 @@ Evento de falha:
 3 - Restore dos LOGs necessários WITH NORECOVERY  
 4 - Restore do LOG WITH STOPATMARK 'Deploy_V1' WITH RECOVERY  
 
-### Resultado:  
+### Resultado  
 
 - O banco é restaurado até o ponto da execução da transação marcada  
 - As alterações do deploy são incluídas  
@@ -579,14 +578,14 @@ Evento de falha:
 3 - Restore dos LOGs necessários WITH NORECOVERY  
 4 - Restore do LOG WITH STOPBEFOREMARK 'Deploy_V1' WITH RECOVERY  
 
-### Resultado:  
+### Resultado  
 
 - O banco é restaurado antes da execução da transação marcada  
 - As alterações do deploy não são aplicadas  
 
 ---
 
-### Análise final:  
+### Análise final  
 
 - STOPATMARK e STOPBEFOREMARK permitem controle preciso baseado em transações  
 - São mais confiáveis que STOPAT em cenários de deploy controlado  
@@ -606,6 +605,13 @@ Evento de falha:
 - Sempre que possível realizar BACKUP do TAIL LOG WITH NO_TRUNCATE antes do restore  
 - Backup íntegro sozinho não garante recovery se a cadeia estiver incompleta  
 - Testes periódicos de restore são indispensáveis para validar a estratégia  
-- RPO e RTO devem orientar a escolha do modelo de backup e recuperação  
+- RPO e RTO devem orientar a escolha do modelo de backup e recuperação
 
----  
+---
+
+## Referências
+
+- [Backups do log de cauda (tail-log)](https://learn.microsoft.com/pt-br/sql/relational-databases/backup-restore/tail-log-backups-sql-server?view=sql-server-ver16)
+- [RESTORE Statements (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/t-sql/statements/restore-statements-transact-sql?view=sql-server-ver16)
+- [Piecemeal Restores (SQL Server)](https://learn.microsoft.com/pt-br/sql/relational-databases/backup-restore/piecemeal-restores-sql-server?view=sql-server-ver16)
+- [Exemplo: Piecemeal Restore de banco de dados (modelo de recuperação completo)](https://learn.microsoft.com/pt-br/sql/relational-databases/backup-restore/example-piecemeal-restore-of-database-full-recovery-model?view=sql-server-ver16)

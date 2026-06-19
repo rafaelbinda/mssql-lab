@@ -1,7 +1,7 @@
 # A0026 – Point-in-Time Restore and Marked Transactions
->**Author:** Rafael Binda  
->**Created:** 2026-04-21  
->**Version:** 2.1  
+> **Author:** Rafael Binda  
+> **Created:** 2026-04-21  
+> **Version:** 2.1  
 
 ---
 
@@ -17,12 +17,12 @@ O objetivo é compreender como o SQL Server utiliza o transaction log para recon
 
 ## Hands-on  
 
-[Q0023 – Point-in-Time Restore and Marked Transactions](../scripts/Q0023-sql-point-in-time-restore-and-marked-transactions.sql)  
-[INST-Q0015 – Point-in-Time and Marked Transaction Inspection](../../../dba-scripts/SQL-instance-information/INST-Q0015-point-in-time-and-marked-transaction-inspection.sql)
+[Q0023 - Point-in-Time Restore and Marked Transactions](../scripts/Q0023-sql-point-in-time-restore-and-marked-transactions.sql)  
+[INST-Q0015 - Point-in-Time and Marked Transaction Inspection](../../../dba-scripts/SQL-instance-information/INST-Q0015-point-in-time-and-marked-transaction-inspection.sql)
 
 ---
 
-## 1 – Conceito de Point-in-Time Restore  
+## 1 - Conceito de Point-in-Time Restore  
 
 O Point-in-Time Restore permite restaurar um banco de dados para um momento específico no tempo, e não apenas para o final de um backup  
 Isso é essencial em cenários como:
@@ -33,7 +33,7 @@ Isso é essencial em cenários como:
 
 ---
 
-## 2 – Pré-requisitos  
+## 2 - Pré-requisitos  
 
 Para utilizar esse tipo de recuperação, o banco deve atender aos seguintes requisitos:
 
@@ -54,7 +54,7 @@ No Recovery Model SIMPLE:
 
 ---
 
-## 3 – Papel do Transaction Log  
+## 3 - Papel do transaction log  
 
 O transaction log é o componente mais importante nesse cenário  
 
@@ -75,7 +75,7 @@ Sem cadeia de LOG íntegra não é possível realizar recuperação ponto a pont
 
 ---
 
-## 4 – STOPAT (data/hora)  
+## 4 - STOPAT (data/hora)  
 
 Permite restaurar o banco até um momento específico  
 
@@ -97,7 +97,7 @@ WITH
 
 ---
 
-## 5 – Transações marcadas  
+## 5 - Transações marcadas  
 
 Permitem criar pontos de controle no log  
 
@@ -111,7 +111,7 @@ COMMIT;
 
 ---
 
-## 6 – STOPATMARK  
+## 6 - STOPATMARK  
 
 Recupera o banco até o momento da execução da transação marcada  
 
@@ -126,7 +126,7 @@ WITH STOPATMARK = 'Deploy_V1', RECOVERY;
 
 ---
 
-## 7 – STOPBEFOREMARK  
+## 7 - STOPBEFOREMARK  
 
 Recupera o banco até imediatamente antes da transação marcada  
 
@@ -141,7 +141,7 @@ WITH STOPBEFOREMARK = 'Deploy_V1', RECOVERY;
 
 ---
 
-## 8 – Diferença entre STOPAT, STOPATMARK e STOPBEFOREMARK  
+## 8 - Diferença entre STOPAT, STOPATMARK e STOPBEFOREMARK  
 
 | Método | Base | Uso |
 |--------|------|-----|
@@ -151,7 +151,7 @@ WITH STOPBEFOREMARK = 'Deploy_V1', RECOVERY;
 
 ---
 
-## 9 – Registro das transações  
+## 9 - Registro das transações  
 
 As transações marcadas são registradas em `msdb.dbo.logmarkhistory`  
 
@@ -162,7 +162,7 @@ Essa tabela permite:
 
 ---
 
-## 10 – Ordem correta de restore  
+## 10 - Ordem correta de restore  
 
 Sempre seguir:
 
@@ -180,12 +180,21 @@ Sempre seguir:
 
 ---
 
-## 11 – Considerações importantes  
+## 11 - Considerações importantes  
 
 - STOPAT só deve ser aplicado no último LOG  
 - Interromper antes invalida sequência  
 - Cadeia de LOG deve estar íntegra  
 - Sem LOG backup não há recuperação granular  
 - STOPAT e STOPATMARK não substituem o TAIL LOG  
-- O TAIL LOG garante a captura das últimas transações antes da falha  
+- O TAIL LOG garante a captura das últimas transações antes da falha
+
+---
+
+## Referências
+
+- [BEGIN TRANSACTION (Transact-SQL) – WITH MARK](https://learn.microsoft.com/pt-br/sql/t-sql/language-elements/begin-transaction-transact-sql?view=sql-server-ver16)
+- [RESTORE Statements - Arguments (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/t-sql/statements/restore-statements-arguments-transact-sql?view=sql-server-ver16)
+- [logmarkhistory (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/relational-databases/system-tables/logmarkhistory-transact-sql?view=sql-server-ver16)
+- [Restaurar um banco de dados do SQL Server até um ponto no tempo](https://learn.microsoft.com/pt-br/sql/relational-databases/backup-restore/restore-a-sql-server-database-to-a-point-in-time-full-recovery-model?view=sql-server-ver16)
 
