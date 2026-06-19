@@ -149,12 +149,12 @@ Quando a instância ainda inicializa, é possível verificar os arquivos da `mod
 Exemplo:  
 ```sql
 SELECT
-DB_NAME(database_id) AS database_name,
-file_id,
-type_desc,
-name AS logical_name,
-physical_name,
-state_desc
+    DB_NAME(database_id) AS database_name,
+    file_id,
+    type_desc,
+    name AS logical_name,
+    physical_name,
+    state_desc
 FROM sys.master_files
 WHERE database_id = DB_ID('model')
 ORDER BY file_id;
@@ -192,8 +192,8 @@ A melhor alternativa depende do estado da instância, da existência de backup e
 ## 9 - Quando existe backup da model
 
 Se existir backup válido da `model`, a recuperação pode ser feita por restore  
-Esse é o cenário mais organizado e seguro 
- 
+Esse é o cenário mais organizado e seguro
+
 Exemplo conceitual:  
 ```sql
 RESTORE DATABASE model
@@ -520,10 +520,10 @@ Após recuperar a `model`, valide o estado do banco
 Exemplo:  
 ```sql
 SELECT
-name,
-state_desc,
-recovery_model_desc,
-user_access_desc
+    name,
+    state_desc,
+    recovery_model_desc,
+    user_access_desc
 FROM sys.databases
 WHERE name = 'model';
 GO
@@ -533,12 +533,12 @@ Valide também os arquivos físicos:
 
 ```sql
 SELECT
-DB_NAME(database_id) AS database_name,
-file_id,
-type_desc,
-name AS logical_name,
-physical_name,
-state_desc
+    DB_NAME(database_id) AS database_name,
+    file_id,
+    type_desc,
+    name AS logical_name,
+    physical_name,
+    state_desc
 FROM sys.master_files
 WHERE database_id = DB_ID('model')
 ORDER BY file_id;
@@ -736,6 +736,13 @@ A melhor estratégia de recuperação é restaurar um backup válido da `model`
 Quando não existe backup, pode ser possível copiar arquivos de uma instância compatível  
 Em cenários mais graves, pode ser necessário usar `-T3608` para inicialização emergencial e depois executar rebuild dos bancos de sistema  
 O rebuild recria `master`, `model`, `msdb` e `tempdb`, por isso deve ser tratado como procedimento invasivo  
-Após recuperar a `model`, é importante validar a criação de novos bancos e a recriação da `tempdb`  
+Após recuperar a `model`, é importante validar a criação de novos bancos e a recriação da `tempdb`
 
 ---
+
+## Referências
+
+- [Banco de dados model](https://learn.microsoft.com/pt-br/sql/relational-databases/databases/model-database?view=sql-server-ver16)
+- [Reconstruir bancos de dados do sistema](https://learn.microsoft.com/pt-br/sql/relational-databases/databases/rebuild-system-databases?view=sql-server-ver16)
+- [DBCC TRACEON – Sinalizadores de rastreamento (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql?view=sql-server-ver16)
+- [Opções de inicialização do serviço do Database Engine](https://learn.microsoft.com/pt-br/sql/database-engine/configure-windows/database-engine-service-startup-options?view=sql-server-ver16)

@@ -18,6 +18,11 @@ Esse tipo de recuperação pode ser útil quando a corrupção está limitada a 
 
 ## Hands-on
 
+[Q0028 - Successful Page Restore](../scripts/Q0028-sql-successful-page-restore.sql)  
+[Q0029 - Successful Multiple Page Restore](../scripts/Q0029-sql-successful-multiple-page-restore.sql)  
+[INST-Q0019 - Active Suspect Pages Overview](../../../dba-scripts/SQL-instance-information/INST-Q0019-suspect-pages-active-overview.sql)  
+[INST-Q0020 - Suspect Pages History Overview](../../../dba-scripts/SQL-instance-information/INST-Q0020-suspect-pages-history-overview.sql)
+
 ---
 
 ## 1 - O que é Page Restore
@@ -74,12 +79,12 @@ A tabela `msdb.dbo.suspect_pages` pode ajudar a identificar o banco, o arquivo e
 Exemplo:  
 ```sql
 SELECT
-DB_NAME(database_id) AS database_name,
-file_id,
-page_id,
-event_type,
-error_count,
-last_update_date
+    DB_NAME(database_id) AS database_name,
+    file_id,
+    page_id,
+    event_type,
+    error_count,
+    last_update_date
 FROM msdb.dbo.suspect_pages
 ORDER BY last_update_date DESC;
 GO
@@ -519,12 +524,12 @@ Exemplo:
 
 ```sql
 SELECT
-DB_NAME(database_id) AS database_name,
-file_id,
-page_id,
-event_type,
-error_count,
-last_update_date
+    DB_NAME(database_id) AS database_name,
+    file_id,
+    page_id,
+    event_type,
+    error_count,
+    last_update_date
 FROM msdb.dbo.suspect_pages
 WHERE database_id = DB_ID('PageRestoreDB')
 ORDER BY last_update_date DESC;
@@ -589,3 +594,10 @@ Page Restore não substitui uma estratégia de backup
 Sem backup válido e cadeia de log íntegra, a recuperação pode não ser possível
 
 ---
+
+## Referências
+
+- [Restaurar páginas (SQL Server)](https://learn.microsoft.com/pt-br/sql/relational-databases/backup-restore/restore-pages-sql-server?view=sql-server-ver16)
+- [RESTORE Statements - Arguments (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/t-sql/statements/restore-statements-arguments-transact-sql?view=sql-server-ver16)
+- [suspect_pages (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/relational-databases/system-tables/suspect-pages-transact-sql?view=sql-server-ver16)
+- [Gerenciar a tabela suspect_pages (SQL Server)](https://learn.microsoft.com/pt-br/sql/relational-databases/backup-restore/manage-the-suspect-pages-table-sql-server?view=sql-server-ver16)

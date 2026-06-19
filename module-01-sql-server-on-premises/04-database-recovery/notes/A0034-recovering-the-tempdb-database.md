@@ -134,13 +134,13 @@ USE tempdb;
 GO
 
 SELECT
-file_id,
-type_desc,
-name AS logical_name,
-physical_name,
-size,
-growth,
-is_percent_growth
+    file_id,
+    type_desc,
+    name AS logical_name,
+    physical_name,
+    size,
+    growth,
+    is_percent_growth
 FROM sys.database_files
 ORDER BY file_id;
 GO
@@ -261,7 +261,7 @@ Exemplo conceitual:
 ```
 
 Esse tipo de teste deve ser feito apenas em laboratório  
-Não deve ser executado em ambiente de produção   
+Não deve ser executado em ambiente de produção
 
 ---
 
@@ -458,13 +458,13 @@ USE tempdb;
 GO
 
 SELECT
-file_id,
-type_desc,
-name AS logical_name,
-physical_name,
-size,
-growth,
-is_percent_growth
+    file_id,
+    type_desc,
+    name AS logical_name,
+    physical_name,
+    size,
+    growth,
+    is_percent_growth
 FROM sys.database_files
 ORDER BY file_id;
 GO
@@ -665,10 +665,10 @@ USE tempdb;
 GO
 
 SELECT
-file_id,
-type_desc,
-name AS logical_name,
-physical_name
+    file_id,
+    type_desc,
+    name AS logical_name,
+    physical_name
 FROM sys.database_files
 ORDER BY file_id;
 GO
@@ -699,6 +699,13 @@ Ela não permite backup e restore tradicional
 Quando há falha relacionada à `tempdb`, o objetivo normalmente é corrigir caminho, permissão, espaço, volume ou configuração para permitir sua recriação no startup  
 Se a instância ainda inicializa, a correção pode ser feita com `ALTER DATABASE tempdb MODIFY FILE` e restart do serviço  
 Se a instância não inicializa, pode ser necessário usar `-f` e `-mSQLCMD` para subir em modo especial, conectar via `sqlcmd` e corrigir o caminho da `tempdb`  
-Após a recuperação, é essencial validar o SQL Server Error Log, o Event Viewer e a configuração física dos arquivos da `tempdb`  
+Após a recuperação, é essencial validar o SQL Server Error Log, o Event Viewer e a configuração física dos arquivos da `tempdb`
 
 ---
+
+## Referências
+
+- [Banco de dados tempdb](https://learn.microsoft.com/pt-br/sql/relational-databases/databases/tempdb-database?view=sql-server-ver16)
+- [ALTER DATABASE (Transact-SQL) – Opções de arquivo e filegroup](https://learn.microsoft.com/pt-br/sql/t-sql/statements/alter-database-transact-sql-file-and-filegroup-options?view=sql-server-ver16)
+- [Mover bancos de dados de sistema](https://learn.microsoft.com/pt-br/sql/relational-databases/databases/move-system-databases?view=sql-server-ver16)
+- [Opções de inicialização do serviço do Database Engine](https://learn.microsoft.com/pt-br/sql/database-engine/configure-windows/database-engine-service-startup-options?view=sql-server-ver16)

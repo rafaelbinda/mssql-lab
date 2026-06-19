@@ -111,8 +111,8 @@ A restauração da `master` exige cuidado porque afeta a instância inteira
 ## 6 - Quando o SQL Server não consegue inicializar
 
 Se o SQL Server não consegue inicializar porque a `master` está corrompida, ausente ou inacessível, o restore direto pode não ser possível  
-Nesse cenário, pode ser necessário fazer primeiro o rebuild dos bancos de sistema 
- 
+Nesse cenário, pode ser necessário fazer primeiro o rebuild dos bancos de sistema
+
 O rebuild recria os bancos:  
 ```text
 master
@@ -537,9 +537,9 @@ Exemplo:
 
 ```sql
 SELECT
-name,
-state_desc,
-recovery_model_desc
+    name,
+    state_desc,
+    recovery_model_desc
 FROM sys.databases
 ORDER BY name;
 GO
@@ -549,9 +549,9 @@ Exemplo para verificar logins:
 
 ```sql
 SELECT
-name,
-type_desc,
-is_disabled
+    name,
+    type_desc,
+    is_disabled
 FROM sys.server_principals
 ORDER BY name;
 GO
@@ -646,6 +646,13 @@ A melhor estratégia de recuperação é restaurar um backup válido da `master`
 Para isso, normalmente é necessário iniciar a instância em modo single-user e conectar via `sqlcmd`  
 Se a instância não inicializar, pode ser necessário executar rebuild dos bancos de sistema  
 Sem backup da `master`, será necessário reconstruir manualmente logins, permissões, linked servers, certificados e demais configurações da instância  
-Nunca se deve negligenciar o backup da `master`  
+Nunca se deve negligenciar o backup da `master`
 
 ---
+
+## Referências
+
+- [Restaurar o banco de dados master (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/relational-databases/backup-restore/restore-the-master-database-transact-sql?view=sql-server-ver16)
+- [Reconstruir bancos de dados do sistema](https://learn.microsoft.com/pt-br/sql/relational-databases/databases/rebuild-system-databases?view=sql-server-ver16)
+- [Banco de dados master](https://learn.microsoft.com/pt-br/sql/relational-databases/databases/master-database?view=sql-server-ver16)
+- [Opções de inicialização do serviço do Database Engine](https://learn.microsoft.com/pt-br/sql/database-engine/configure-windows/database-engine-service-startup-options?view=sql-server-ver16)

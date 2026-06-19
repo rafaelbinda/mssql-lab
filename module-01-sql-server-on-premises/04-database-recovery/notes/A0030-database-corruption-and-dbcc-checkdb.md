@@ -16,6 +16,7 @@ Também são abordadas as opções de reparo disponíveis, seus riscos, a import
 
 ## Hands-on
 
+[Q0027 - Data Page Corruption and CHECKDB Repair](../scripts/Q0027-sql-data-page-corruption-and-checkdb-repair.sql)  
 [Q0030 - Index Corruption and CHECKDB](../scripts/Q0030-sql-index-corruption-and-checkdb.sql)  
 [INST-Q0019 - Active Suspect Pages Overview](../../../dba-scripts/SQL-instance-information/INST-Q0019-suspect-pages-active-overview.sql)  
 [INST-Q0020 - Suspect Pages History Overview](../../../dba-scripts/SQL-instance-information/INST-Q0020-suspect-pages-history-overview.sql)

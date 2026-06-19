@@ -84,8 +84,8 @@ A estratégia de backup da `msdb` costuma se basear em:
 Exemplo de consulta:  
 ```sql
 SELECT
-name,
-recovery_model_desc
+    name,
+    recovery_model_desc
 FROM sys.databases
 WHERE name = 'msdb';
 GO
@@ -249,18 +249,18 @@ Antes de restaurar a `msdb`, é possível verificar conexões ativas
 Exemplo:
 ```sql
 SELECT
-s.session_id,
-s.login_name,
-s.host_name,
-s.program_name,
-s.status,
-DB_NAME(r.database_id) AS database_name,
-r.command
+    s.session_id,
+    s.login_name,
+    s.host_name,
+    s.program_name,
+    s.status,
+    DB_NAME(r.database_id) AS database_name,
+    r.command
 FROM sys.dm_exec_sessions AS s
 LEFT JOIN sys.dm_exec_requests AS r
     ON s.session_id = r.session_id
 WHERE DB_NAME(r.database_id) = 'msdb'
-   OR s.database_id = DB_ID('msdb')
+    OR s.database_id = DB_ID('msdb')
 ORDER BY s.session_id;
 GO
 ```
@@ -451,10 +451,10 @@ Após restaurar a `msdb`, é importante validar os principais recursos operacion
 Exemplo para verificar jobs:  
 ```sql
 SELECT
-name,
-enabled,
-date_created,
-date_modified
+    name,
+    enabled,
+    date_created,
+    date_modified
 FROM msdb.dbo.sysjobs
 ORDER BY name;
 GO
@@ -463,11 +463,11 @@ GO
 Exemplo para verificar histórico de backup:  
 ```sql
 SELECT TOP (50)
-database_name,
-backup_start_date,
-backup_finish_date,
-type,
-backup_size
+    database_name,
+    backup_start_date,
+    backup_finish_date,
+    type,
+    backup_size
 FROM msdb.dbo.backupset
 ORDER BY backup_start_date DESC;
 GO
@@ -476,9 +476,9 @@ GO
 Exemplo para verificar operadores:  
 ```sql
 SELECT
-name,
-enabled,
-email_address
+    name,
+    enabled,
+    email_address
 FROM msdb.dbo.sysoperators
 ORDER BY name;
 GO
@@ -487,9 +487,9 @@ GO
 Exemplo para verificar Database Mail:  
 ```sql
 SELECT
-name,
-description,
-last_mod_datetime
+    name,
+    description,
+    last_mod_datetime
 FROM msdb.dbo.sysmail_profile
 ORDER BY name;
 GO
@@ -540,9 +540,9 @@ Isso pode ocorrer principalmente após rebuild ou recuperação em outra instân
 Exemplo de consulta:  
 ```sql
 SELECT
-j.name AS job_name,
-SUSER_SNAME(j.owner_sid) AS owner_name,
-j.enabled
+    j.name AS job_name,
+    SUSER_SNAME(j.owner_sid) AS owner_name,
+    j.enabled
 FROM msdb.dbo.sysjobs AS j
 ORDER BY j.name;
 GO
@@ -554,8 +554,8 @@ Exemplo conceitual:
 
 ```sql
 EXEC msdb.dbo.sp_update_job
-@job_name = N'JobName',
-@owner_login_name = N'sa';
+    @job_name = N'JobName',
+    @owner_login_name = N'sa';
 GO
 ```
 
@@ -577,12 +577,12 @@ Após restore da `msdb`, é importante validar:
 Exemplo para consultar mensagens recentes:  
 ```sql
 SELECT TOP (50)
-mailitem_id,
-sent_status,
-send_request_date,
-sent_date,
-recipients,
-subject
+    mailitem_id,
+    sent_status,
+    send_request_date,
+    sent_date,
+    recipients,
+    subject
 FROM msdb.dbo.sysmail_allitems
 ORDER BY send_request_date DESC;
 GO
@@ -673,6 +673,13 @@ Por padrão, a `msdb` utiliza recovery model `SIMPLE`
 A estratégia de recuperação normalmente envolve backup full e, quando necessário, backup diferencial  
 Antes de restaurar a `msdb`, é importante parar o SQL Server Agent e garantir que nenhuma conexão esteja usando o banco  
 Após o restore, devem ser validados jobs, schedules, operadores, alertas, Database Mail, histórico de backup e recursos dependentes da `msdb`  
-Sem backup da `msdb`, será necessário recriar manualmente configurações operacionais importantes da instância  
+Sem backup da `msdb`, será necessário recriar manualmente configurações operacionais importantes da instância
 
 ---
+
+## Referências
+
+- [Banco de dados msdb](https://learn.microsoft.com/pt-br/sql/relational-databases/databases/msdb-database?view=sql-server-ver16)
+- [sp_update_job (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/relational-databases/system-stored-procedures/sp-update-job-transact-sql?view=sql-server-ver16)
+- [Backup e restore: bancos de dados de sistema (SQL Server)](https://learn.microsoft.com/pt-br/sql/relational-databases/backup-restore/back-up-and-restore-of-system-databases-sql-server?view=sql-server-ver16)
+- [Histórico de backup e informações de cabeçalho (SQL Server)](https://learn.microsoft.com/pt-br/sql/relational-databases/backup-restore/backup-history-and-header-information-sql-server?view=sql-server-ver16)
