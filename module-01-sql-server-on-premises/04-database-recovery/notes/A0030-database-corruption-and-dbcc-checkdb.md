@@ -16,6 +16,10 @@ Também são abordadas as opções de reparo disponíveis, seus riscos, a import
 
 ## Hands-on
 
+[Q0030 - Index Corruption and CHECKDB](../scripts/Q0030-sql-index-corruption-and-checkdb.sql)  
+[INST-Q0019 - Active Suspect Pages Overview](../../../dba-scripts/SQL-instance-information/INST-Q0019-suspect-pages-active-overview.sql)  
+[INST-Q0020 - Suspect Pages History Overview](../../../dba-scripts/SQL-instance-information/INST-Q0020-suspect-pages-history-overview.sql)
+
 ---
 
 ## 1 - O que é corrupção de banco de dados
@@ -142,8 +146,8 @@ Se os valores forem diferentes, isso indica que a página pode ter sido alterada
 Exemplo de consulta para verificar a configuração:
 ```sql
 SELECT
-name AS database_name,
-page_verify_option_desc
+    name AS database_name,
+    page_verify_option_desc
 FROM sys.databases
 ORDER BY name;
 GO
@@ -171,8 +175,8 @@ Quando `PAGE_VERIFY` está como `NONE`, o SQL Server perde uma camada importante
 Exemplo de consulta para identificar bancos sem `CHECKSUM`:
 ```sql
 SELECT
-name AS database_name,
-page_verify_option_desc
+    name AS database_name,
+    page_verify_option_desc
 FROM sys.databases
 WHERE page_verify_option_desc <> 'CHECKSUM'
 ORDER BY name;
@@ -245,12 +249,12 @@ Ela armazena informações sobre páginas que apresentaram falhas de leitura, ch
 Exemplo de consulta:
 ```sql
 SELECT
-DB_NAME(database_id) AS database_name,
-file_id,
-page_id,
-event_type,
-error_count,
-last_update_date
+    DB_NAME(database_id) AS database_name,
+    file_id,
+    page_id,
+    event_type,
+    error_count,
+    last_update_date
 FROM msdb.dbo.suspect_pages
 ORDER BY last_update_date DESC;
 GO
@@ -533,12 +537,12 @@ Um fluxo básico de investigação pode seguir esta ordem:
 Exemplo de consulta em `suspect_pages`:  
 ```sql
 SELECT
-DB_NAME(database_id) AS database_name,
-file_id,
-page_id,
-event_type,
-error_count,
-last_update_date
+    DB_NAME(database_id) AS database_name,
+    file_id,
+    page_id,
+    event_type,
+    error_count,
+    last_update_date
 FROM msdb.dbo.suspect_pages
 ORDER BY last_update_date DESC;
 GO
@@ -598,7 +602,7 @@ Esse endereço representa a página `1:264`
 
 ---
 
-## 25 - Page Types
+## 25 - Page types
 
 Alguns tipos de página importantes:
 ```text
@@ -609,8 +613,8 @@ PageType 10 = IAM Page
 
 A página de dados armazena linhas da tabela  
 A página de índice armazena estruturas de índice  
-A página IAM - *Index Allocation Map* controla informações de alocação  
- 
+A página IAM - *Index Allocation Map* controla informações de alocação
+
 ---
 
 ## 26 - Exemplo mental sobre IAM Page
@@ -791,7 +795,7 @@ O fluxo deve ser:
 
 A estratégia ideal para lidar com corrupção envolve prevenção, detecção e recuperação
 
-### Prevenção:
+### Prevenção
 - Storage confiável
 - Memória saudável
 - Drivers e firmware atualizados
@@ -799,13 +803,13 @@ A estratégia ideal para lidar com corrupção envolve prevenção, detecção e
 - Monitoramento do SQL Server Error Log
 - Alertas para erros críticos
 
-### Detecção:
+### Detecção
 - `PAGE_VERIFY CHECKSUM`
 - Alertas para erros 823, 824 e 825
 - Consulta à `msdb.dbo.suspect_pages`
 - Execução periódica de `DBCC CHECKDB`
 
-### Recuperação:
+### Recuperação
 - Tail-log backup, quando aplicável
 - Backups válidos
 - Retenção adequada
@@ -849,6 +853,16 @@ O SQL Server possui recursos importantes para identificação e investigação, 
 A melhor estratégia de recuperação continua sendo backup válido e testado  
 O `DBCC CHECKDB` deve fazer parte da rotina de manutenção, mas não deve ser tratado como substituto de backup  
 
-Opções como `REPAIR_REBUILD` e `REPAIR_ALLOW_DATA_LOSS` devem ser usadas com cuidado e, preferencialmente, apenquando não existir alternativa melhor
+Opções como `REPAIR_REBUILD` e `REPAIR_ALLOW_DATA_LOSS` devem ser usadas com cuidado e, preferencialmente, apenas quando não existir alternativa melhor
+
+---
+
+## Referências
+
+- [DBCC CHECKDB (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/t-sql/database-console-commands/dbcc-checkdb-transact-sql?view=sql-server-ver16)
+- [suspect_pages (Transact-SQL)](https://learn.microsoft.com/pt-br/sql/relational-databases/system-tables/suspect-pages-transact-sql?view=sql-server-ver16)
+- [ALTER DATABASE SET options (Transact-SQL) – PAGE_VERIFY](https://learn.microsoft.com/pt-br/sql/t-sql/statements/alter-database-transact-sql-set-options?view=sql-server-ver16)
+- [Erro do MSSQLSERVER 824](https://learn.microsoft.com/pt-br/sql/relational-databases/errors-events/mssqlserver-824-database-engine-error?view=sql-server-ver16)
+- [Opções de inicialização do serviço do Database Engine](https://learn.microsoft.com/pt-br/sql/database-engine/configure-windows/database-engine-service-startup-options?view=sql-server-ver16)
 
 ---
